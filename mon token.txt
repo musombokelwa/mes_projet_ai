@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GTC - Green Transforms Company</title>
+<style>
+  /* === FOND ANIMÉ === */
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(270deg, #31587c, #4dffff, #251c55, #285783);
+    background-size: 800% 800%;
+    animation: gradientMove 15s ease infinite;
+    color: white;
+    text-align: center;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* === NAVIGATION === */
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(17, 60, 68, 0.6);
+    flex-wrap: wrap;
+    padding: 10px;
+    position: relative;
+    z-index: 100;
+  }
+
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin: 0 15px;
+    padding: 8px 15px;
+    transition: 0.3s;
+  }
+  nav a:hover {
+    background: rgba(255,255,255,0.2);
+    border-radius: 8px;
+  }
+
+  /* === BURGER === */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    width: 30px;
+    height: 25px;
+    justify-content: space-between;
+    cursor: pointer;
+    margin: 10px;
+    z-index: 101;
+    position: relative;
+  }
+  .bar {
+    height: 4px;
+    width: 100%;
+    background-color: white;
+    border-radius: 5px;
+    transition: 0.4s;
+  }
+  .hamburger.open .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .hamburger.open .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* === MENU MOBILE ANIMÉ === */
+  @media (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      width: 100%;
+      position: absolute;
+      top: -500px; /* caché par défaut */
+      left: 0;
+      transition: top 0.5s ease;
+    }
+    nav.active {
+      top: 60px; /* visible juste sous le burger */
+    }
+    .hamburger {
+      display: flex; /* burger visible sur mobile */
+    }
+    nav a {
+      margin: 10px 0;
+    }
+  }
+
+  /* === SLIDER === */
+  .slider {
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  .slides {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    transition: transform 1s ease-in-out;
+  }
+  .slides img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* === SECTION DE PRÉSENTATION === */
+  .debut {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    margin: 20px;
+    padding: 20px;
+  }
+
+  /* === BOUTON BASCULE MODE === */
+  #toggleMode {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    background-color: #ffffff;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  #toggleMode:hover {
+    background-color: #ccc;
+  }
+</style>
+</head>
+<body>
+  <!-- BURGER -->
+  <div class="hamburger" id="hamburger">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <!-- MENU -->
+  <nav id="menu">
+    <a href="#">Accueil</a>
+    <a href="#">Ce que nous faisons</a>
+    <a href="#">À propos</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <!-- SLIDER -->
+  <div class="slider">
+    <div class="slides" id="slides">
+      <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e" alt="Construction 1">
+      <img src="https://images.unsplash.com/photo-1503389152951-9f343605f61c" alt="Construction 2">
+      <img src="https://images.unsplash.com/photo-1581092795360-fd1ca4a9c2e3" alt="Construction 3">
+    </div>
+  </div>
+
+  <!-- SECTION DE PRÉSENTATION -->
+  <div class="debut">
+    <h1>GREEN TRANSFORMS COMPANY</h1>
+    <h2>TRANSFORMER, VALORISER ET INNOVER</h2>
+    <strong>Donner une nouvelle vie aux plastiques, c’est possible !</strong>
+  </div>
+
+  <!-- BOUTON BASCULE MODE -->
+  <button id="toggleMode">📱</button>
+
+  <script>
+    // BURGER MENU
+    const hamburger = document.getElementById("hamburger");
+    const menu = document.getElementById("menu");
+
+    hamburger.addEventListener("click", () => {
+      menu.classList.toggle("active");
+      hamburger.classList.toggle("open");
+    });
+
+    // SLIDER AUTO
+    let index = 0;
+    const slides = document.getElementById("slides");
+    const totalSlides = slides.children.length;
+    setInterval(() => {
+      index = (index + 1) % totalSlides;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }, 3000);
+
+    // BOUTON BASCULE MOBILE/PC
+    const toggleMode = document.getElementById("toggleMode");
+    let isMobile = false;
+    toggleMode.addEventListener("click", () => {
+      isMobile = !isMobile;
+      document.body.style.width = isMobile ? "375px" : "100%";
+      document.body.style.margin = "0 auto";
+      toggleMode.textContent = isMobile ? "💻" : "📱";
+    });
+  </script>
+</body>
+</html>
+
